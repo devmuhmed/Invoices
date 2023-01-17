@@ -18,6 +18,7 @@ class RouteServiceProvider extends ServiceProvider
      * @var string
      */
     public const HOME = '/home';
+    // preventing redundancy of use namespace of controller in web and api
     protected $namespace = 'App\Http\Controllers';
 
     /**
