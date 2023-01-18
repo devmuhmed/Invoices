@@ -22,4 +22,5 @@ Auth::routes();
 Route::get('pages/{page}', 'AdminController@index');
 Route::resource('invoices', 'InvoiceController');
 Route::resource('sections', 'SectionController');
+Route::resource('products', 'ProductController');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
