@@ -8,93 +8,51 @@ use Illuminate\Support\Facades\Auth;
 
 class SectionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        return view('sections.sections');
+        $sections = Section::all();
+        return view('sections.sections',compact('sections'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        // $input = $request->all();
-        $b_exists = Section::where('section_name',$request->section_name)->exists();
-        if($b_exists){
-            session()->flash('Error','wrong sectore is been before');
-            return redirect('/sections');
-        }
-        else{
-            Section::create([
-                'section_name' => $request->section_name,
-                'description' => $request->description,
-                'created_by' => (Auth::user()->name),
-            ]);
-            session()->flash('Add','Add Successfully');
-            return redirect('/sections');
-        }
+        // first way to make validation
+        $rules = [
+            'section_name' => 'required|unique:sections|max:255',
+            'description' => 'required'
+        ];
+        $this->validate($request,$rules);
+        Section::create([
+            'section_name' => $request->section_name,
+            'description' => $request->description,
+            'created_by' => Auth::user()->name
+        ]);
+        session()->flash('Add','Add Succfully');
+        return redirect(route('sections.index'));
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Section  $section
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Section $section)
+    public function update(Request $request)
     {
-        //
+        $rules = [
+            'section_name' => 'required|unique:sections|max:255',
+            $request->id,
+            'description' => 'required'
+        ];
+        $this->validate($request,$rules);
+        $section = Section::findOrFail($request->id);
+        $section->update([
+            'section_name' => $request->section_name,
+            'description' => $request->description,
+            'created_by' => Auth::user()->name
+        ]);
+        session()->flash('Edit','Edit Successfully');
+        return redirect(route('sections.index'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Section  $section
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Section $section)
+    public function destroy(Request $request)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Section  $section
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Section $section)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Section  $section
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Section $section)
-    {
-        //
+        Section::find($request->id)->delete();
+        session()->flash('Delete','Deleted Successfully');
+        return redirect(route('sections.index'));
     }
 }
