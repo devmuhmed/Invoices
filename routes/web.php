@@ -23,4 +23,15 @@ Route::get('pages/{page}', 'AdminController@index');
 Route::resource('invoices', 'InvoiceController');
 Route::resource('sections', 'SectionController');
 Route::resource('products', 'ProductController');
+Route::get('/invoicedetails/{id}', 'InvoiceDetailController@edit');
+Route::get('download/{invoice_number}/{file_name}', 'InvoiceDetailController@get_file');
+Route::get('view_file/{invoice_number}/{file_name}', 'InvoiceDetailController@open_file');
+Route::post('delete_file', 'InvoiceDetailController@destroy')->name('delete_file');
+Route::post('invoiceattachments', 'InvoiceAttachmentController@store');
+Route::get('/edit_invoice/{id}', 'InvoiceController@edit');
+
+
+// using Ajax in route go to method (getProducts) in (InvoiceController)
+// used scriptAjax Javascript in blade (add_invoice)
+Route::get('/section/{id}', 'InvoiceController@getProducts');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

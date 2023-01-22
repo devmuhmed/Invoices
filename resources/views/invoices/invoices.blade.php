@@ -9,6 +9,8 @@ Invoices List
     <link href="{{ URL::asset('assets/plugins/datatable/css/jquery.dataTables.min.css') }}" rel="stylesheet">
     <link href="{{ URL::asset('assets/plugins/datatable/css/responsive.dataTables.min.css') }}" rel="stylesheet">
     <link href="{{ URL::asset('assets/plugins/select2/css/select2.min.css') }}" rel="stylesheet">
+    <!--Internal   Notify -->
+    <link href="{{ URL::asset('assets/plugins/notify/css/notifIt.css') }}" rel="stylesheet" />
 @endsection
 @section('page-header')
     <!-- breadcrumb -->
@@ -18,25 +20,28 @@ Invoices List
                 <h4 class="content-title mb-0 my-auto">Invoices</h4><span class="text-muted mt-1 tx-13 mr-2 mb-0">/ Invoices
                     Lists</span>
             </div>
-        {{-- </div>
-        <div class="d-flex my-xl-auto right-content">
-
-        </div> --}}
+        </div>
     </div>
     <!-- breadcrumb -->
 @endsection
 @section('content')
+@if (session()->has('delete_invoice'))
+<script>
+    window.onload = function() {
+        notif({
+            msg: "تم حذف الفاتورة بنجاح",
+            type: "success"
+        })
+    }
+</script>
+@endif
     <!-- row -->
     <div class="row row-sm">
         <!--div-->
         <div class="col-xl-12">
             <div class="card mg-b-20">
                 <div class="card-header pb-0">
-                    <div class="d-flex justify-content-between">
-                        <h4 class="card-title mg-b-0">Bordered Table</h4>
-                        <i class="mdi mdi-dots-horizontal text-gray"></i>
-                    </div>
-                    <p class="tx-12 tx-gray-500 mb-2">Example of Valex Bordered Table.. <a href="">Learn more</a></p>
+                    <a class="btn-outline-primary btn-lg" href="invoices/create">Add Invoice <i class="fa fa-plus-circle"></i></a>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -45,8 +50,8 @@ Invoices List
                                 <tr>
                                     <th class="border-bottom-0">#</th>
                                     <th class="border-bottom-0">No.Invoice</th>
-                                    <th class="border-bottom-0">Invoice_Date</th>
-                                    <th class="border-bottom-0">due_date</th>
+                                    <th class="border-bottom-0">Invoice Date</th>
+                                    <th class="border-bottom-0">Due Date</th>
                                     <th class="border-bottom-0">Product</th>
                                     <th class="border-bottom-0">Section</th>
                                     <th class="border-bottom-0">Discount</th>
@@ -55,23 +60,55 @@ Invoices List
                                     <th class="border-bottom-0">Total</th>
                                     <th class="border-bottom-0">Status</th>
                                     <th class="border-bottom-0">Notes</th>
+                                    <th class="border-bottom-0">Operations</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr class="text-center">
-                                    <td>1</td>
-                                    <td>28765</td>
-                                    <td>2023-09-13</td>
-                                    <td>2011/04/25</td>
-                                    <td>CC</td>
-                                    <td>National Bank Of Egypt</td>
-                                    <td>1000</td>
-                                    <td>10%</td>
-                                    <td>2500</td>
-                                    <td>2650</td>
-                                    <td>unpaid</td>
-                                    <td>failed transaction</td>
-                                </tr>
+                                @foreach ($invoices as $invoice)
+                                    <tr class="text-center">
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $invoice->invoice_number }}</td>
+                                        <td>{{ $invoice->invoice_date }}</td>
+                                        <td>{{ $invoice->due_date }}</td>
+                                        <td>{{ $invoice->product }}</td>
+                                        <td>
+                                            <a href="{{ url('invoicedetails') }}/{{ $invoice->id }}">{{ $invoice->section->section_name }}</a>
+                                        </td>
+                                        <td>{{ $invoice->discount }}</td>
+                                        <td>{{ $invoice->rate_vat }}</td>
+                                        <td>{{ $invoice->value_vat }}</td>
+                                        <td>{{ $invoice->total }}</td>
+                                        <td>
+                                            @if ($invoice->value_status == 1)
+                                                <span class="text-success">{{ $invoice->status }}</span>
+                                            @elseif ($invoice->value_status == 2)
+                                                <span class="text-danger">{{ $invoice->status }}</span>
+                                            @else
+                                                <span class="text-warning">{{ $invoice->status }}</span>
+                                            @endif
+                                        </td>
+                                        <td>{{ $invoice->note }}</td>
+                                        <td>
+                                            <div class="dropdown">
+                                                <button aria-expanded="false" aria-haspopup="true"
+                                                    class="btn ripple btn-primary btn-sm" data-toggle="dropdown"
+                                                    type="button">العمليات<i class="fas fa-caret-down ml-1"></i></button>
+                                                <div class="dropdown-menu tx-13">
+                                                        <a class="dropdown-item"
+                                                            href=" {{ url('edit_invoice') }}/{{ $invoice->id }}"><i
+                                                            class="text-primary fa fa-edit"></i>&nbsp;&nbsp;تعديل
+                                                            الفاتورة</a>
+
+                                                            <a class="dropdown-item" href="#" data-invoice_id="{{ $invoice->id }}"
+                                                            data-toggle="modal" data-target="#delete_invoice"><i
+                                                                class="text-danger fas fa-trash-alt"></i>&nbsp;&nbsp;حذف
+                                                            الفاتورة</a>
+                                                </div>
+                                            </div>
+
+                                        </td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -79,6 +116,32 @@ Invoices List
             </div>
         </div>
         <!--/div-->
+    </div>
+    <!-- حذف الفاتورة -->
+    <div class="modal fade" id="delete_invoice" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">حذف الفاتورة</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <form action="{{ route('invoices.destroy', 'test') }}" method="post">
+                        @method('delete')
+                        @csrf
+                </div>
+                <div class="modal-body">
+                    هل انت متاكد من عملية الحذف ؟
+                    <input type="hidden" name="invoice_id" id="invoice_id" value="">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">الغاء</button>
+                    <button type="submit" class="btn btn-danger">تاكيد</button>
+                </div>
+                </form>
+            </div>
+        </div>
     </div>
     <!-- row closed -->
     </div>
@@ -106,4 +169,15 @@ Invoices List
     <script src="{{ URL::asset('assets/plugins/datatable/js/responsive.bootstrap4.min.js') }}"></script>
     <!--Internal  Datatable js -->
     <script src="{{ URL::asset('assets/js/table-data.js') }}"></script>
+     <!--Internal  Notify js -->
+     <script src="{{ URL::asset('assets/plugins/notify/js/notifIt.js') }}"></script>
+     <script src="{{ URL::asset('assets/plugins/notify/js/notifit-custom.js') }}"></script>
+    <script>
+        $('#delete_invoice').on('show.bs.modal',function(e){
+            let button = $(e.relatedTarget);
+            let invoice_id = button.data('invoice_id');
+            let modal = $(this);
+            modal.find('.modal-body #invoice_id').val(invoice_id);
+        })
+    </script>
 @endsection
