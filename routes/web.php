@@ -31,6 +31,9 @@ Route::post('invoiceattachments', 'InvoiceAttachmentController@store');
 Route::get('/edit_invoice/{id}', 'InvoiceController@edit');
 Route::get('/status_show/{id}', 'InvoiceController@show')->name('status_show');
 Route::post('/status_update/{id}', 'InvoiceController@status_update')->name('status_update');
+Route::get('invoice_paid', 'InvoiceController@invoice_paid');
+Route::get('invoice_unpaid', 'InvoiceController@invoice_unpaid');
+Route::get('invoice_partial', 'InvoiceController@invoice_partial');
 
 
 // using Ajax in route go to method (getProducts) in (InvoiceController)
