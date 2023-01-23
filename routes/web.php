@@ -44,3 +44,9 @@ Route::get('export_invoices', 'InvoiceController@export');
 // used scriptAjax Javascript in blade (add_invoice)
 Route::get('/section/{id}', 'InvoiceController@getProducts');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::get('/home', 'HomeController@index')->name('home');
+Route::group(['middleware' => ['auth']], function() {
+Route::resource('roles','RoleController');
+Route::resource('users','UserController');
+});
