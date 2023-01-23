@@ -61,7 +61,9 @@ Invoices List
         <div class="col-xl-12">
             <div class="card mg-b-20">
                 <div class="card-header pb-0">
-                    <a class="btn-outline-primary btn-lg" href="invoices/create">Add Invoice <i class="fa fa-plus-circle"></i></a>
+                    <a class="modal-effect btn btn-sm btn-primary" href="invoices/create" style="color:white">Add Invoice <i class="fa fa-plus-circle"></i></a>
+                    <a class="modal-effect btn btn-sm btn-primary" href="{{ url('export_invoices') }}"
+                            style="color:white"><i class="fas fa-file-download"></i>&nbsp;تصدير اكسيل</a>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">

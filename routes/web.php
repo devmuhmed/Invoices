@@ -37,6 +37,8 @@ Route::get('invoice_partial', 'InvoiceController@invoice_partial');
 Route::resource('archive', 'InvoiceArchiveController');
 Route::get('print_invoice/{id}','InvoiceController@print_invoice');
 
+// maatwebsite package Export Excel
+Route::get('export_invoices', 'InvoiceController@export');
 
 // using Ajax in route go to method (getProducts) in (InvoiceController)
 // used scriptAjax Javascript in blade (add_invoice)
