@@ -32,6 +32,7 @@
 							<li><a class="slide-item" href="{{ url('/' . $page='invoice_paid') }}">Paid Invoices</a></li>
 							<li><a class="slide-item" href="{{ url('/' . $page='invoice_unpaid') }}">Unpaid Invoices</a></li>
 							<li><a class="slide-item" href="{{ url('/' . $page='invoice_partial') }}">Partial Paid Invoices</a></li>
+							<li><a class="slide-item" href="{{ url('/' . $page='archive') }}">Archived Invoices</a></li>
 						</ul>
 					</li>
 					<li class="side-item side-item-category">Reports</li>

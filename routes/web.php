@@ -34,6 +34,7 @@ Route::post('/status_update/{id}', 'InvoiceController@status_update')->name('sta
 Route::get('invoice_paid', 'InvoiceController@invoice_paid');
 Route::get('invoice_unpaid', 'InvoiceController@invoice_unpaid');
 Route::get('invoice_partial', 'InvoiceController@invoice_partial');
+Route::resource('archive', 'InvoiceArchiveController');
 
 
 // using Ajax in route go to method (getProducts) in (InvoiceController)

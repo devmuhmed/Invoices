@@ -154,13 +154,21 @@ class InvoiceController extends Controller
     {
         $invoice = Invoice::where('id',$request->invoice_id)->first();
         $attaches = InvoiceAttachment::where('invoice_id',$request->invoice_id)->first();
-        if(!empty($attaches->invoice_number)){
-            Storage::disk('public_uploads')->deleteDirectory($attaches->invoice_number);
-            // Storage::disk('public_uploads')->delete($attaches->invoice_number.'/'.$attaches->file_name);
+        $id_page =$request->id_page;
+        if($id_page != 2)
+        {
+            if(!empty($attaches->invoice_number)){
+                Storage::disk('public_uploads')->deleteDirectory($attaches->invoice_number);
+            }
+            $invoice->forceDelete();
+            session()->flash('delete_invoice');
+            return redirect('/invoices');
         }
-        $invoice->forceDelete();
-        session()->flash('delete_invoice');
-        return back();
+        else{
+            $invoice->delete();
+            session()->flash('archive_invoice');
+            return redirect('/archive');
+        }
     }
     // using method getProducts for Ajax
     public function getProducts($id){
