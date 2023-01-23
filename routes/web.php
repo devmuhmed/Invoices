@@ -29,6 +29,8 @@ Route::get('view_file/{invoice_number}/{file_name}', 'InvoiceDetailController@op
 Route::post('delete_file', 'InvoiceDetailController@destroy')->name('delete_file');
 Route::post('invoiceattachments', 'InvoiceAttachmentController@store');
 Route::get('/edit_invoice/{id}', 'InvoiceController@edit');
+Route::get('/status_show/{id}', 'InvoiceController@show')->name('status_show');
+Route::post('/status_update/{id}', 'InvoiceController@status_update')->name('status_update');
 
 
 // using Ajax in route go to method (getProducts) in (InvoiceController)

@@ -76,6 +76,50 @@ class InvoiceController extends Controller
         return back();
     }
 
+    public function show($id)
+    {
+        $invoice = Invoice::where('id',$id)->first();
+        return view('invoices.status_update',compact('invoice'));
+    }
+    public function status_update($id,Request $request){
+        $invoice = Invoice::find($id);
+        if($request->status === "paid"){
+            $invoice->update([
+                'value_status' => 1,
+                'status' => $request->status,
+                'payment_date' =>$request->payment_date
+            ]);
+            InvoiceDetail::create([
+                'invoice_id'=> $request->invoice_id,
+                'invoice_number'=> $request->invoice_number,
+                'product' => $request->product,
+                'section' => $request->section,
+                'status' => $request->status,
+                'value_status' => 1,
+                'note' =>$request->note,
+                'user' => (Auth::user()->name),
+            ]);
+        }
+        else{
+            $invoice->update([
+                'value_status' => 3,
+                'status' => $request->status,
+                'payment_date' =>$request->payment_date
+            ]);
+            InvoiceDetail::create([
+                'invoice_id'=> $request->invoice_id,
+                'invoice_number'=> $request->invoice_number,
+                'product' => $request->product,
+                'section' => $request->section,
+                'status' => $request->status,
+                'value_status' => 3,
+                'note' =>$request->note,
+                'user' => (Auth::user()->name),
+            ]);
+        }
+        session()->flash('status_update');
+        return redirect('/invoices');
+    }
     public function edit($id)
     {
         $invoices = Invoice::where('id',$id)->first();
@@ -111,8 +155,8 @@ class InvoiceController extends Controller
         $invoice = Invoice::where('id',$request->invoice_id)->first();
         $attaches = InvoiceAttachment::where('invoice_id',$request->invoice_id)->first();
         if(!empty($attaches->invoice_number)){
-            // Storage::disk('public_uploads')->deleteDirectory($attaches->invoice_number);
-            Storage::disk('public_uploads')->delete($attaches->invoice_number.'/'.$attaches->file_name);
+            Storage::disk('public_uploads')->deleteDirectory($attaches->invoice_number);
+            // Storage::disk('public_uploads')->delete($attaches->invoice_number.'/'.$attaches->file_name);
         }
         $invoice->forceDelete();
         session()->flash('delete_invoice');
@@ -123,4 +167,5 @@ class InvoiceController extends Controller
         $products = DB::table('products')->where("section_id",$id)->pluck('product_name','id');
         return json_encode($products);
     }
+
 }
