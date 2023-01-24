@@ -88,8 +88,8 @@
                         <div class="col-lg-6">
                             <label class="form-label">حالة المستخدم</label>
                             <select name="Status" id="select-beast" class="form-control  nice-select  custom-select">
-                                <option value="مفعل">مفعل</option>
-                                <option value="غير مفعل">غير مفعل</option>
+                                <option value="active">active</option>
+                                <option value="disabled">disabled</option>
                             </select>
                         </div>
                     </div>

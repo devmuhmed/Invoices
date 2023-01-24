@@ -64,8 +64,10 @@
         <div class="card mg-b-20">
             <div class="card-header pb-0">
                 <div class="d-flex justify-content-between">
+                    @can('add-product')
                         <a class="modal-effect btn btn-outline-primary btn-lg" data-effect="effect-scale"
                             data-toggle="modal" href="#modaldemo8">Add Product <i class="fa fa-plus-circle"></i></a>
+                    @endcan
                 </div>
             </div>
             <div class="card-body">
@@ -89,14 +91,18 @@
                                 <td>{{ $product->section->section_name }} </td>
                                 <td>{{ $product->description }}</td>
                                 <td>
-                                    <button class="btn btn-outline-success btn-sm"
-                                        data-name="{{ $product->product_name }}" data-pro_id="{{ $product->id }}"
-                                        data-section_name="{{ $product->section->section_name }}"
-                                        data-description="{{ $product->description }}" data-toggle="modal"
-                                        data-target="#edit_product">Edit</button>
-                                    <button class="btn btn-outline-danger btn-sm " data-pro_id="{{ $product->id }}"
-                                        data-product_name="{{ $product->product_name }}" data-toggle="modal"
-                                        data-target="#modaldemo9">Delete</button>
+                                    @can('edit-product')
+                                        <button class="btn btn-outline-success btn-sm"
+                                            data-name="{{ $product->product_name }}" data-pro_id="{{ $product->id }}"
+                                            data-section_name="{{ $product->section->section_name }}"
+                                            data-description="{{ $product->description }}" data-toggle="modal"
+                                            data-target="#edit_product">Edit</button>
+                                    @endcan
+                                    @can('delete-product')
+                                        <button class="btn btn-outline-danger btn-sm " data-pro_id="{{ $product->id }}"
+                                            data-product_name="{{ $product->product_name }}" data-toggle="modal"
+                                            data-target="#modaldemo9">Delete</button>
+                                    @endcan
                                 </td>
                             </tr>
                             @endforeach

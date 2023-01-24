@@ -43,7 +43,7 @@
         <div class="card">
             <div class="card-header pb-0">
                 <div class="col-sm-1 col-md-2">
-                    @can('اضافة مستخدم')
+                    @can('add-user')
                         <a class="btn btn-primary btn-sm" href="{{ route('users.create') }}">اضافة مستخدم</a>
                     @endcan
                 </div>
@@ -64,11 +64,11 @@
                         <tbody>
                             @foreach ($data as $key => $user)
                                 <tr>
-                                    <td>{{ ++$i }}</td>
+                                    <td>{{ $loop->iteration }}</td>
                                     <td>{{ $user->name }}</td>
                                     <td>{{ $user->email }}</td>
                                     <td>
-                                        @if ($user->Status == 'مفعل')
+                                        @if ($user->Status == 'active')
                                             <span class="label text-success d-flex">
                                                 <div class="dot-label bg-success ml-1"></div>{{ $user->Status }}
                                             </span>
@@ -88,12 +88,12 @@
                                     </td>
 
                                     <td>
-                                        @can('تعديل مستخدم')
+                                        @can('edit-user')
                                             <a href="{{ route('users.edit', $user->id) }}" class="btn btn-sm btn-info"
                                                 title="تعديل"><i class="las la-pen"></i></a>
                                         @endcan
 
-                                        @can('حذف مستخدم')
+                                        @can('delete-user')
                                             <a class="modal-effect btn btn-sm btn-danger" data-effect="effect-scale"
                                                 data-user_id="{{ $user->id }}" data-username="{{ $user->name }}"
                                                 data-toggle="modal" href="#modaldemo8" title="حذف"><i
