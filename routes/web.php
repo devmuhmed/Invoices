@@ -37,6 +37,8 @@ Route::get('invoice_partial', 'InvoiceController@invoice_partial');
 Route::resource('archive', 'InvoiceArchiveController');
 Route::get('print_invoice/{id}','InvoiceController@print_invoice');
 
+Route::get('invoices_report','InvoiceController@report');
+Route::post('invoices_search','InvoiceController@invoices_search');
 // maatwebsite package Export Excel
 Route::get('export_invoices', 'InvoiceController@export');
 
