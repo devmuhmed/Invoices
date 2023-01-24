@@ -39,6 +39,8 @@ Route::get('print_invoice/{id}','InvoiceController@print_invoice');
 
 Route::get('invoices_report','InvoiceController@report');
 Route::post('invoices_search','InvoiceController@invoices_search');
+Route::get('customers_report','InvoiceController@customers_report');
+Route::post('customers_search','InvoiceController@customers_search');
 // maatwebsite package Export Excel
 Route::get('export_invoices', 'InvoiceController@export');
 

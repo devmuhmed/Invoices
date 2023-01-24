@@ -237,5 +237,24 @@ class InvoiceController extends Controller
             return view('reports.invoices_report')->withDetails($invoices);
         }
     }
-
+    public function customers_report()
+    {
+        $sections = Section::all();
+        return view('reports.customers_report',compact('sections'));
+    }
+    public function customers_search(Request $request)
+    {
+        if ($request->section && $request->product && $request->start_at =='' && $request->end_at=='') {
+            $invoices = Invoice::select('*')->where('section_id',$request->section)->where('product',$request->product)->get();
+            $sections = Section::all();
+             return view('reports.customers_report',compact('sections'))->withDetails($invoices);
+           }
+           else {
+            $start_at = date($request->start_at);
+            $end_at = date($request->end_at);
+            $invoices = Invoice::whereBetween('invoice_Date',[$start_at,$end_at])->where('section_id',$request->section)->where('product',$request->product)->get();
+            $sections = Section::all();
+            return view('reports.customers_report',compact('sections'))->withDetails($invoices);
+          }
+    }
 }
