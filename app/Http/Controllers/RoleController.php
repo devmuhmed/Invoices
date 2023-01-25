@@ -12,13 +12,13 @@ class RoleController extends Controller
 *
 * @return \Illuminate\Http\Response
 */
-// function __construct()
-// {
-// $this->middleware('permission:show-permisision', ['only' => ['index']]);
-// $this->middleware('permission:add-permisision', ['only' => ['create','store']]);
-// $this->middleware('permission:edit-permisision', ['only' => ['edit','update']]);
+function __construct()
+{
+$this->middleware('permission:show-permission', ['only' => ['index']]);
+$this->middleware('permission:add-permission', ['only' => ['create','store']]);
+// $this->middleware('permission:edit-role', ['only' => ['edit','update']]);
 // $this->middleware('permission:delete-permisision', ['only' => ['destroy']]);
-// }
+}
 /**
 * Display a listing of the resource.
 *
