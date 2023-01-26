@@ -9,6 +9,7 @@ use App\Models\InvoiceDetail;
 use App\Models\Section;
 use App\Models\User;
 use App\Notifications\AddInvoice;
+use App\Notifications\AddInvoiceData;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -78,7 +79,10 @@ class InvoiceController extends Controller
             $request->pic->move(public_path('Attachments/' . $invoice_number), $imageName);
         }
         $user = User::first();
+        // email Notification
         Notification::send($user,new AddInvoice($invoice_id));
+        // database Notification
+        $user->notify(new AddInvoiceData($invoice_id));
         session()->flash('Add','Added Successfully');
         return back();
     }
@@ -241,6 +245,14 @@ class InvoiceController extends Controller
     {
         $sections = Section::all();
         return view('reports.customers_report',compact('sections'));
+    }
+    public function markAsReadAll()
+    {
+        $userUnreadNotification = auth()->user()->unreadNotifications;
+        if($userUnreadNotification) {
+            $userUnreadNotification->markAsRead();
+            return back();
+        }
     }
     public function customers_search(Request $request)
     {

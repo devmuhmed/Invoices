@@ -24,7 +24,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $count_invoice = Invoice::count();
+        $count_invoice = Invoice::count() || 1;
         $count_paid = Invoice::where('value_status', 1)->count();
         $count_unpaid = Invoice::where('value_status', 2)->count();
         $count_partialpaid = Invoice::where('value_status', 3)->count();
@@ -60,7 +60,7 @@ class HomeController extends Controller
           else{
               $nspainvoices3 = $partialpaid_percentage;
           }
-          
+
         $chartjs_pie = app()->chartjs
         ->name('pieChartTest')
         ->type('pie')

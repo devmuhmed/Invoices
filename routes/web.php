@@ -43,6 +43,8 @@ Route::get('customers_report','InvoiceController@customers_report');
 Route::post('customers_search','InvoiceController@customers_search');
 // maatwebsite package Export Excel
 Route::get('export_invoices', 'InvoiceController@export');
+// Mark As Read All Notification
+Route::get('/MarkAsReadAll','InvoiceController@markAsReadAll');
 
 // using Ajax in route go to method (getProducts) in (InvoiceController)
 // used scriptAjax Javascript in blade (add_invoice)
