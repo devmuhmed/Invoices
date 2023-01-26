@@ -164,8 +164,16 @@
                                                 <h6 class="dropdown-title mb-1 tx-15 text-white font-weight-semibold">Notifications</h6>
                                                 <span class="badge badge-pill badge-warning mr-auto my-auto float-left"><a href="/MarkAsReadAll">Mark All Read</a></span>
                                             </div>
-                                            <p class="dropdown-title-text subtext mb-0 text-white op-6 pb-0 tx-12 ">You have {{ auth()->user()->unreadNotifications->count() }} unread Notifications</p>
+                                            <p class="dropdown-title-text subtext mb-0 text-white op-6 pb-0 tx-12">You have
+                                                {{-- make reload instead of pusher --}}
+                                                <h6 style="color:yellow; display:inline;" id="notifications_count">
+                                                    {{ auth()->user()->unreadNotifications->count() }}
+                                                </h6>
+                                                unread Notifications
+                                            </p>
                                         </div>
+                                        {{-- make reload instead of pusher --}}
+                                        <div id="unreadNotification">
                                         @foreach (auth()->user()->unreadNotifications as $notification)
                                             <div class="main-notification-list Notification-scroll">
                                                 <a class="d-flex p-3 border-bottom" href="{{ url('invoicedetails') }}/{{ $notification->data['id'] }}">
@@ -187,6 +195,7 @@
                                                 </a>
                                             </div>
                                             @endforeach
+                                        </div>
                                     </div>
                                 </div>
                             @endcan
