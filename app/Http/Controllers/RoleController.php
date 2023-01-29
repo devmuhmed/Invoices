@@ -16,8 +16,8 @@ function __construct()
 {
 $this->middleware('permission:show-permission', ['only' => ['index']]);
 $this->middleware('permission:add-permission', ['only' => ['create','store']]);
-// $this->middleware('permission:edit-role', ['only' => ['edit','update']]);
-// $this->middleware('permission:delete-permisision', ['only' => ['destroy']]);
+$this->middleware('permission:edit-permission', ['only' => ['edit','update']]);
+$this->middleware('permission:delete-permission', ['only' => ['destroy']]);
 }
 /**
 * Display a listing of the resource.

@@ -29,11 +29,11 @@
             	@include('layouts.footer')
 				@include('layouts.footer-scripts')
 	</body>
-    {{-- <script> --}}
-        // you make disaster => foolish load on server
-        // setInterval(() => {
-        //     $('#notifications_count').load(window.location.href + "#notifications_count");
-        //     $('#unreadNotification').load(window.location.href + "#unreadNotification");
-        // },5000);
-    {{-- </script> --}}
+    <!-- <script>
+        you make disaster => foolish load on server
+        setInterval(() => {
+            $('#notifications_count').load(window.location.href + "#notifications_count");
+            $('#unreadNotification').load(window.location.href + "#unreadNotification");
+        },5000);
+    </script> -->
 </html>
